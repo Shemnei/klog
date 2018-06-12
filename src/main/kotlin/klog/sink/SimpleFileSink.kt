@@ -19,22 +19,14 @@ class SimpleFileSink(
 
     override val formats: MutableMap<LogLevel, LogFormat> = mutableMapOf()
 
-    override val filer: MutableSet<LogFilter> = mutableSetOf()
+    override val filter: MutableSet<LogFilter> = mutableSetOf()
+
+    private val fileName: String
+        get() = "%s.log".format(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")))
 
     private val file: RandomAccessFile by lazy {
         Files.createDirectories(Paths.get(directory))
-        val f = Paths.get(
-                directory,
-                "%s.log"
-                        .format(
-                                LocalDateTime
-                                        .now()
-                                        .format(
-                                                DateTimeFormatter
-                                                        .ofPattern("yyyyMMdd_HHmmss")
-                                        )
-                        )
-        ).toFile()
+        val f = Paths.get(directory, fileName).toFile()
         f.createNewFile()
         RandomAccessFile(f, "rw")
     }

@@ -6,10 +6,10 @@ import klog.filter.LogFilter
 import klog.format.LogFormat
 
 interface LogSink {
-    val filer: MutableSet<LogFilter>
+    val filter: MutableSet<LogFilter>
 
     fun accept(logRecord: LogRecord) {
-        if (filer.firstOrNull { !it.test(logRecord) } == null) {
+        if (filter.firstOrNull { !it.test(logRecord) } == null) {
             processLog(logRecord)
         }
     }

@@ -1,10 +1,18 @@
 package klog
 
 import klog.marker.Marker
+import klog.util.getCaller
 
 
 fun log(id: String, level: LogLevel, msg: String, thr: Throwable? = null, marker: Marker? = null) {
     val record = LogRecord(level, id, msg, thr, marker)
+    if (Loggers.FILTER.firstOrNull { !it.test(record) } == null) {
+        Loggers.SINKS.forEach { it.accept(record) }
+    }
+}
+
+fun trace(id: String, level: LogLevel, msg: String, thr: Throwable? = null, marker: Marker? = null) {
+    val record = LogRecord(level, id, msg, thr, marker, getCaller())
     if (Loggers.FILTER.firstOrNull { !it.test(record) } == null) {
         Loggers.SINKS.forEach { it.accept(record) }
     }

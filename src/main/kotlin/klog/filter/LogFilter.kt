@@ -44,3 +44,20 @@ class MarkerFilter(
         }
     }
 }
+
+enum class AttributeFilterType {
+    MESSAGE, MARKER, THROWABLE, TRACE
+}
+
+class AttributeFilter(
+        private val type: AttributeFilterType = AttributeFilterType.THROWABLE
+) : LogFilter {
+    override fun test(t: LogRecord): Boolean {
+        return when (type) {
+            AttributeFilterType.MESSAGE -> t.message != null
+            AttributeFilterType.MARKER -> t.marker != null
+            AttributeFilterType.THROWABLE -> t.throwable != null
+            AttributeFilterType.TRACE -> t.caller != null
+        }
+    }
+}

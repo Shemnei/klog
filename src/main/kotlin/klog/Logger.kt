@@ -3,6 +3,7 @@ package klog
 import klog.filter.LogFilter
 import klog.marker.Marker
 import klog.sink.LogSink
+import klog.util.getCaller
 
 class Logger internal constructor(
         private val id: String,
@@ -11,6 +12,13 @@ class Logger internal constructor(
 ) {
     fun log(level: LogLevel, msg: String, thr: Throwable? = null, marker: Marker? = null) {
         val record = LogRecord(level, id, msg, thr, marker)
+        if (logFilter.firstOrNull { !it.test(record) } == null) {
+            logSinks.forEach { it.accept(record) }
+        }
+    }
+
+    fun trace(level: LogLevel, msg: String, thr: Throwable? = null, marker: Marker? = null) {
+        val record = LogRecord(level, id, msg, thr, marker, getCaller())
         if (logFilter.firstOrNull { !it.test(record) } == null) {
             logSinks.forEach { it.accept(record) }
         }
