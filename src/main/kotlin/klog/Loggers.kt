@@ -3,14 +3,20 @@ package klog
 import klog.filter.LogFilter
 import klog.sink.LogSink
 
-object Loggers {
+class Loggers {
 
-    private val loggers: MutableMap<String, Logger> = hashMapOf()
+    companion object {
+        @JvmStatic
+        private val loggers: MutableMap<String, Logger> = hashMapOf()
+        @JvmStatic
+        val SINKS: MutableSet<LogSink> = mutableSetOf()
+        @JvmStatic
+        val FILTER: MutableSet<LogFilter> = mutableSetOf()
 
-    val SINKS: MutableSet<LogSink> = mutableSetOf()
-    val FILTER: MutableSet<LogFilter> = mutableSetOf()
-
-    fun getLogger(key: String): Logger {
-        return loggers.computeIfAbsent(key, { Logger(key, SINKS.toMutableSet(), FILTER.toMutableSet()) })
+        @JvmStatic
+        fun get(key: String): Logger {
+            return loggers.computeIfAbsent(key, { Logger(key, SINKS.toMutableSet(), FILTER.toMutableSet()) })
+        }
     }
+
 }

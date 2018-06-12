@@ -1,9 +1,14 @@
 package klog.marker
 
-object Markers {
-    private val markers: MutableMap<String, Marker> = mutableMapOf()
+class Markers {
 
-    fun get(key: String): Marker {
-        return markers.computeIfAbsent(key, { Marker(key) })
+    companion object {
+        @JvmStatic
+        private val markers: MutableMap<String, Marker> = mutableMapOf()
+
+        @JvmStatic
+        fun get(key: String): Marker {
+            return markers.computeIfAbsent(key, { Marker(key) })
+        }
     }
 }
