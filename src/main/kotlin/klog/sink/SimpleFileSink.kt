@@ -4,7 +4,7 @@ import klog.LogLevel
 import klog.LogRecord
 import klog.filter.LogFilter
 import klog.format.LogFormat
-import klog.format.VariableFormat
+import klog.format.SimpleFormat
 import java.io.RandomAccessFile
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -12,26 +12,17 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 class SimpleFileSink(
-        private val directory: String
-) : FormattedLogSink {
-
-    override val defaultFormat: LogFormat = VariableFormat.SIMPLE
-
-    override val formats: MutableMap<LogLevel, LogFormat> = mutableMapOf()
-
-    override val filter: MutableSet<LogFilter> = mutableSetOf()
-
-    private val fileName: String
-        get() = "%s.log".format(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")))
+        private val filePath: String
+) : FormattedLogSink() {
 
     private val file: RandomAccessFile by lazy {
-        Files.createDirectories(Paths.get(directory))
-        val f = Paths.get(directory, fileName).toFile()
+        val f = Paths.get(filePath).toFile()
+        Files.createDirectories(Paths.get(f.parent))
         f.createNewFile()
         RandomAccessFile(f, "rw")
     }
 
-    override fun processLog(logRecord: LogRecord) {
-        file.write("%s\r\n".format(formatRecord(logRecord)).toByteArray())
+    override fun processLog(log: LogRecord) {
+        file.write("%s\r\n".format(formatRecord(log)).toByteArray())
     }
 }

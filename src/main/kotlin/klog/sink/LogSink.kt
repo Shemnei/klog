@@ -4,25 +4,28 @@ import klog.LogLevel
 import klog.LogRecord
 import klog.filter.LogFilter
 import klog.format.LogFormat
+import klog.format.SimpleFormat
 
 interface LogSink {
     val filter: MutableSet<LogFilter>
 
-    fun accept(logRecord: LogRecord) {
-        if (filter.firstOrNull { !it.test(logRecord) } == null) {
-            processLog(logRecord)
+    fun accept(log: LogRecord) {
+        if (filter.firstOrNull { !it.test(log) } == null) {
+            processLog(log)
         }
     }
 
-    fun processLog(logRecord: LogRecord)
+    fun processLog(log: LogRecord)
 }
 
-interface FormattedLogSink : LogSink {
-    val defaultFormat: LogFormat
-    val formats: MutableMap<LogLevel, LogFormat>
+abstract class FormattedLogSink : LogSink {
+    override val filter: MutableSet<LogFilter> = mutableSetOf()
 
-    fun formatRecord(logRecord: LogRecord): String {
-        val format = formats.getOrDefault(logRecord.level, defaultFormat)
-        return format.format(logRecord)
+    var defaultFormat: LogFormat = SimpleFormat()
+    val formats: MutableMap<LogLevel, LogFormat> = mutableMapOf()
+
+    fun formatRecord(log: LogRecord): String {
+        val format = formats.getOrDefault(log.level, defaultFormat)
+        return format.format(log)
     }
 }

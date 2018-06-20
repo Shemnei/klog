@@ -3,5 +3,5 @@ package klog.format
 import klog.LogRecord
 
 interface LogFormat {
-    fun format(logRecord: LogRecord): String
+    fun format(log: LogRecord): String
 }
