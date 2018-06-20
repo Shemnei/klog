@@ -18,12 +18,12 @@ fun trace(id: String, level: LogLevel, msg: String, thr: Throwable? = null, mark
     }
 }
 
-fun verbose(id: String, msg: String, marker: Marker? = null, thr: Throwable? = null) {
-    log(id, LogLevel.VERBOSE, msg, thr, marker)
-}
-
 fun debug(id: String, msg: String, marker: Marker? = null, thr: Throwable? = null) {
     log(id, LogLevel.DEBUG, msg, thr, marker)
+}
+
+fun verbose(id: String, msg: String, marker: Marker? = null, thr: Throwable? = null) {
+    log(id, LogLevel.VERBOSE, msg, thr, marker)
 }
 
 fun info(id: String, msg: String, marker: Marker? = null, thr: Throwable? = null) {
@@ -36,9 +36,5 @@ fun warn(id: String, msg: String, marker: Marker? = null, thr: Throwable? = null
 
 fun error(id: String, msg: String, thr: Throwable? = null, marker: Marker? = null) {
     log(id, LogLevel.ERROR, msg, thr, marker)
-}
-
-fun fatal(id: String, msg: String, thr: Throwable? = null, marker: Marker? = null) {
-    log(id, LogLevel.FATAL, msg, thr, marker)
 }
 

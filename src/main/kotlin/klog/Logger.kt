@@ -24,12 +24,12 @@ class Logger internal constructor(
         }
     }
 
-    fun verbose(msg: String, marker: Marker? = null, thr: Throwable? = null) {
-        log(LogLevel.VERBOSE, msg, thr, marker)
-    }
-
     fun debug(msg: String, marker: Marker? = null, thr: Throwable? = null) {
         log(LogLevel.DEBUG, msg, thr, marker)
+    }
+
+    fun verbose(msg: String, marker: Marker? = null, thr: Throwable? = null) {
+        log(LogLevel.VERBOSE, msg, thr, marker)
     }
 
     fun info(msg: String, marker: Marker? = null, thr: Throwable? = null) {
@@ -42,9 +42,5 @@ class Logger internal constructor(
 
     fun error(msg: String, thr: Throwable? = null, marker: Marker? = null) {
         log(LogLevel.ERROR, msg, thr, marker)
-    }
-
-    fun fatal(msg: String, thr: Throwable? = null, marker: Marker? = null) {
-        log(LogLevel.FATAL, msg, thr, marker)
     }
 }
