@@ -4,9 +4,6 @@ import klog.Logger
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.time.Duration
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.ZonedDateTime
 
 object Util
 
@@ -20,13 +17,7 @@ fun Throwable.stringify(): String {
 
 fun getCaller(pckg: String = Logger::class.java.packageName): StackTraceElement {
     val stackTraceElements = Thread.currentThread().stackTrace.toMutableList()
-    // pop java.Thread element. Now the first non klog package will be the caller.
-    stackTraceElements.removeAt(0)
     return stackTraceElements.first { !it.className.startsWith(pckg) }
-}
-
-fun LocalDateTime.zone(fromZone: ZoneId, toZone: ZoneId): LocalDateTime {
-    return LocalDateTime.ofInstant(ZonedDateTime.of(this, fromZone).toInstant(), toZone)
 }
 
 // HH:mm:ss.SSS

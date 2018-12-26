@@ -2,9 +2,8 @@ package klog.format
 
 import klog.LogLevel
 import klog.LogRecord
-import java.time.format.DateTimeFormatter
 
-class ColoredANSIFormat : LogFormat {
+class ColoredFormatDecorator(private val format: LogFormat) : LogFormat by format {
 
     companion object {
         private const val ANSI_START = "\u001B[%dm"
@@ -15,10 +14,8 @@ class ColoredANSIFormat : LogFormat {
         private const val WHITE = 37
     }
 
-    private val DT_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-
     override fun format(log: LogRecord): String {
-        val inner = "[%s] [%s/%s] - %s".format(log.created.format(DT_FORMAT), log.loggerId, log.level, log.message)
+        val inner = format.format(log)
         return getColorString(log.level).format(inner)
     }
 

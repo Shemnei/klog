@@ -12,6 +12,6 @@ class LoggerSink(
     override val filter: MutableSet<LogFilter> = mutableSetOf()
 
     override fun processLog(log: LogRecord) {
-        logger.log(log.level, log.message!!, log.throwable, log.marker)
+        logger.log(log.level, log.message!!, arrayOf(log.throwable, log.marker))
     }
 }

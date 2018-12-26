@@ -1,46 +1,51 @@
 package klog
 
 import klog.filter.LogFilter
-import klog.marker.Marker
 import klog.sink.LogSink
-import klog.util.getCaller
 
-class Logger internal constructor(
-        private val id: String,
-        val logSinks: MutableSet<LogSink> = mutableSetOf(),
-        val logFilter: MutableSet<LogFilter> = mutableSetOf()
-) {
-    fun log(level: LogLevel, msg: String, thr: Throwable? = null, marker: Marker? = null) {
-        val record = LogRecord(level, id, msg, thr, marker)
-        if (logFilter.firstOrNull { !it.test(record) } == null) {
-            logSinks.forEach { it.accept(record) }
-        }
-    }
+interface Logger {
 
-    fun trace(level: LogLevel, msg: String, thr: Throwable? = null, marker: Marker? = null) {
-        val record = LogRecord(level, id, msg, thr, marker, getCaller())
-        if (logFilter.firstOrNull { !it.test(record) } == null) {
-            logSinks.forEach { it.accept(record) }
-        }
-    }
+    val id: String
 
-    fun debug(msg: String, marker: Marker? = null, thr: Throwable? = null) {
-        log(LogLevel.DEBUG, msg, thr, marker)
-    }
+    fun log(level: LogLevel, msg: String, vararg objs: Any)
 
-    fun verbose(msg: String, marker: Marker? = null, thr: Throwable? = null) {
-        log(LogLevel.VERBOSE, msg, thr, marker)
-    }
+    fun trace(level: LogLevel, msg: String, vararg objs: Any)
 
-    fun info(msg: String, marker: Marker? = null, thr: Throwable? = null) {
-        log(LogLevel.INFO, msg, thr, marker)
-    }
+    fun debug(msg: String, vararg objs: Any) = log(LogLevel.DEBUG, msg, *objs)
 
-    fun warn(msg: String, marker: Marker? = null, thr: Throwable? = null) {
-        log(LogLevel.WARN, msg, thr, marker)
-    }
+    fun verbose(msg: String, vararg objs: Any) = log(LogLevel.VERBOSE, msg, *objs)
 
-    fun error(msg: String, thr: Throwable? = null, marker: Marker? = null) {
-        log(LogLevel.ERROR, msg, thr, marker)
-    }
+    fun info(msg: String, vararg objs: Any) = log(LogLevel.INFO, msg, *objs)
+
+    fun warn(msg: String, vararg objs: Any) = log(LogLevel.WARN, msg, *objs)
+
+    fun error(msg: String, vararg objs: Any) = log(LogLevel.ERROR, msg, *objs)
+
+    fun add(sink: LogSink): Boolean
+    fun remove(sink: LogSink): Boolean
+
+    fun add(filter: LogFilter): Boolean
+    fun remove(filter: LogFilter): Boolean
+
+    operator fun LogSink.unaryPlus() = add(this)
+    operator fun LogSink.unaryMinus() = remove(this)
+
+    operator fun LogFilter.unaryPlus() = add(this)
+    operator fun LogFilter.unaryMinus() = remove(this)
+}
+
+operator fun Logger.plusAssign(sink: LogSink) {
+    this.add(sink)
+}
+
+operator fun Logger.minusAssign(sink: LogSink) {
+    this.add(sink)
+}
+
+operator fun Logger.plusAssign(filter: LogFilter) {
+    this.add(filter)
+}
+
+operator fun Logger.minusAssign(filter: LogFilter) {
+    this.add(filter)
 }

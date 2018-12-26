@@ -1,7 +1,6 @@
 package klog
 
 import klog.marker.Marker
-import java.time.LocalDateTime
 import java.time.ZonedDateTime
 
 // TODO: 10.06.2018 maybe a log record id?

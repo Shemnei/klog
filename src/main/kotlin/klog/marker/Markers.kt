@@ -8,7 +8,7 @@ class Markers {
 
         @JvmStatic
         fun get(key: String): Marker {
-            return markers.computeIfAbsent(key, { Marker(key) })
+            return markers.computeIfAbsent(key) { Marker(key) }
         }
     }
 }
