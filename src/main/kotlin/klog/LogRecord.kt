@@ -7,12 +7,15 @@ import java.time.ZonedDateTime
 data class LogRecord(
         val level: LogLevel,
         val loggerId: String,
-        val message: String? = null,
+        val logMessage: String? = null,
+        val lazyMessage: (() -> String)?,
         val throwable: Throwable? = null,
         val marker: Marker? = null,
         val caller: StackTraceElement? = null,
         val args: List<Any>? = null
 ) {
     val created: ZonedDateTime = ZonedDateTime.now()
+
+    val message: String? by lazy { logMessage ?: lazyMessage?.invoke() }
 }
 

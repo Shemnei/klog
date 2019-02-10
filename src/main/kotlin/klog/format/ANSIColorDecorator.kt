@@ -3,7 +3,7 @@ package klog.format
 import klog.LogLevel
 import klog.LogRecord
 
-class ColoredFormatDecorator(private val format: LogFormat) : LogFormat by format {
+class ANSIColorDecorator(private val format: LogFormat) : LogFormat by format {
 
     companion object {
         private const val ANSI_START = "\u001B[%dm"

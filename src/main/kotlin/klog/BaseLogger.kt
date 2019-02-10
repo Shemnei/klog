@@ -12,14 +12,28 @@ class BaseLogger internal constructor(
 ) : Logger {
 
     override fun log(level: LogLevel, msg: String, vararg objs: Any) {
-        val record = createRecord(level, msg, false, objs)
+        val record = createRecord(level, msg, null, false, objs)
+        if (filters.firstOrNull { !it.test(record) } == null) {
+            sinks.forEach { it.accept(record) }
+        }
+    }
+
+    override fun log(level: LogLevel, lazyMsg: () -> String, vararg objs: Any) {
+        val record = createRecord(level, null, lazyMsg, false, objs)
         if (filters.firstOrNull { !it.test(record) } == null) {
             sinks.forEach { it.accept(record) }
         }
     }
 
     override fun trace(level: LogLevel, msg: String, vararg objs: Any) {
-        val record = createRecord(level, msg, true, objs)
+        val record = createRecord(level, msg, null, true, objs)
+        if (filters.firstOrNull { !it.test(record) } == null) {
+            sinks.forEach { it.accept(record) }
+        }
+    }
+
+    override fun trace(level: LogLevel, lazyMsg: () -> String, vararg objs: Any) {
+        val record = createRecord(level, null, lazyMsg, false, objs)
         if (filters.firstOrNull { !it.test(record) } == null) {
             sinks.forEach { it.accept(record) }
         }
@@ -31,10 +45,10 @@ class BaseLogger internal constructor(
     override fun add(filter: LogFilter): Boolean = filters.add(filter)
     override fun remove(filter: LogFilter): Boolean = filters.remove(filter)
 
-    private fun createRecord(level: LogLevel, msg: String, trace: Boolean, objs: Array<out Any>): LogRecord {
+    private fun createRecord(level: LogLevel, msg: String?, lazyMsg: (() -> String)?, trace: Boolean, objs: Array<out Any>): LogRecord {
         val marker = objs.firstOrNull { it is Marker } as Marker?
         val throwable = objs.firstOrNull { it is Throwable } as Throwable?
-        return LogRecord(level, this.id, msg, throwable, marker, if (trace) getCaller() else null)
+        return LogRecord(level, this.id, msg, lazyMsg, throwable, marker, if (trace) getCaller() else null)
     }
 }
 
