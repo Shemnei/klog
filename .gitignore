@@ -1,4 +1,4 @@
-# ide
+# idea
 .idea/
 build/
 out/
@@ -27,3 +27,6 @@ hs_err_pid*
 
 # add gradle wrapper jar
 !gradle/wrapper/gradle-wrapper.jar
+
+# custom
+builds/
