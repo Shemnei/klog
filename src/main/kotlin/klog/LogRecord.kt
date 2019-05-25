@@ -2,8 +2,8 @@ package klog
 
 import klog.marker.Marker
 import java.time.ZonedDateTime
+import java.util.*
 
-// TODO: 10.06.2018 maybe a log record id?
 data class LogRecord(
         val level: LogLevel,
         val loggerId: String,
@@ -14,6 +14,7 @@ data class LogRecord(
         val caller: StackTraceElement? = null,
         val args: List<Any>? = null
 ) {
+    val guid: UUID = UUID.randomUUID()
     val created: ZonedDateTime = ZonedDateTime.now()
 
     val message: String? by lazy { logMessage ?: lazyMessage?.invoke() }
