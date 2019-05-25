@@ -1,9 +1,11 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     kotlin("jvm") version "1.3.31"
 }
 
 group = "com.github.shemnei"
-version = "1.0"
+version = "1.2.0"
 
 repositories {
     mavenCentral()
@@ -11,8 +13,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    compile(kotlin("reflect"))
-    compile("org.json", "json", "20180813")
+    implementation(kotlin("reflect"))
 }
 
 tasks.withType<KotlinCompile> {
