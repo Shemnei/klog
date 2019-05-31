@@ -2,6 +2,6 @@ package klog.format
 
 import klog.LogRecord
 
-interface LogFormat {
-    fun format(log: LogRecord): String
+public interface LogFormat {
+    public fun format(log: LogRecord): String
 }

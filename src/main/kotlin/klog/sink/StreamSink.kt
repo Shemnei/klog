@@ -5,12 +5,13 @@ import klog.LogRecord
 import java.io.OutputStream
 import java.nio.charset.Charset
 
-open class StreamSink(
-        val mainStream: OutputStream,
-        val errorStream: OutputStream = mainStream
+public open class StreamSink
+public constructor(
+    private val mainStream: OutputStream,
+    private val errorStream: OutputStream = mainStream
 ) : FormattedLogSink() {
 
-    override fun processLog(log: LogRecord) {
+    public override fun processLog(log: LogRecord) {
         val formatted = formatRecord(log)
         if (log.level == LogLevel.ERROR) {
             errorStream.write("$formatted\r\n".toByteArray(Charset.forName("UTF8")))

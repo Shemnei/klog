@@ -1,16 +1,17 @@
 package klog.marker
 
-class Marker internal constructor(
-        val id: String
+public class Marker
+internal constructor(
+    public val id: String
 ) {
     private val parents: MutableSet<Marker> = HashSet()
 
-    fun addParents(vararg markers: Marker): Marker {
+    public fun addParents(vararg markers: Marker): Marker {
         parents.addAll(markers)
         return this
     }
 
-    fun isChildOf(marker: Marker): Boolean {
+    public fun isChildOf(marker: Marker): Boolean {
         return checkChild(marker, this)
     }
 

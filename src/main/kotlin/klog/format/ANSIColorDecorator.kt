@@ -3,9 +3,12 @@ package klog.format
 import klog.LogLevel
 import klog.LogRecord
 
-class ANSIColorDecorator(private val format: LogFormat) : LogFormat by format {
+public class ANSIColorDecorator
+public constructor(
+    private val format: LogFormat
+) : LogFormat by format {
 
-    companion object {
+    public companion object {
         private const val ANSI_START = "\u001B[%dm"
         private const val ANSI_END = "\u001B[0m"
         private const val RED = 31
@@ -14,7 +17,7 @@ class ANSIColorDecorator(private val format: LogFormat) : LogFormat by format {
         private const val WHITE = 37
     }
 
-    override fun format(log: LogRecord): String {
+    public override fun format(log: LogRecord): String {
         val inner = format.format(log)
         return getColorString(log.level).format(inner)
     }

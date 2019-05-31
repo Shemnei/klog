@@ -1,6 +1,6 @@
 package klog
 
-enum class LogLevel {
+public enum class LogLevel {
     ERROR,
     WARN,
     INFO,

@@ -4,19 +4,20 @@ import klog.marker.Marker
 import java.time.ZonedDateTime
 import java.util.*
 
-data class LogRecord(
-        val level: LogLevel,
-        val loggerId: String,
-        val logMessage: String? = null,
-        val lazyMessage: (() -> String)?,
-        val throwable: Throwable? = null,
-        val marker: Marker? = null,
-        val caller: StackTraceElement? = null,
-        val args: List<Any>? = null
+public data class LogRecord
+public constructor(
+    public val level: LogLevel,
+    public val loggerId: String,
+    public val logMessage: String? = null,
+    public val lazyMessage: (() -> String)?,
+    public val throwable: Throwable? = null,
+    public val marker: Marker? = null,
+    public val caller: StackTraceElement? = null,
+    public val args: List<Any>? = null
 ) {
-    val guid: UUID = UUID.randomUUID()
-    val created: ZonedDateTime = ZonedDateTime.now()
+    public val guid: UUID = UUID.randomUUID()
+    public val created: ZonedDateTime = ZonedDateTime.now()
 
-    val message: String? by lazy { logMessage ?: lazyMessage?.invoke() }
+    public val message: String by lazy { logMessage ?: lazyMessage?.invoke() ?: "" }
 }
 

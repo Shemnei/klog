@@ -1,13 +1,13 @@
 package klog.marker
 
-class Markers {
+public class Markers {
 
-    companion object {
+    public companion object {
         @JvmStatic
         private val markers: MutableMap<String, Marker> = mutableMapOf()
 
         @JvmStatic
-        fun get(key: String): Marker {
+        public fun get(key: String): Marker {
             return markers.computeIfAbsent(key) { Marker(key) }
         }
     }

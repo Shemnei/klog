@@ -5,17 +5,18 @@ import klog.LogRecord
 import klog.marker.Marker
 import java.util.function.Predicate
 
-interface LogFilter : Predicate<LogRecord>
+public interface LogFilter : Predicate<LogRecord>
 
-enum class LogLevelFilterType {
+public enum class LogLevelFilterType {
     EXACT, GREATER, LESSER, GREATER_EQUALS, LESSER_EQUALS
 }
 
-class LogLevelFilter(
-        private val level: LogLevel,
-        private val type: LogLevelFilterType = LogLevelFilterType.EXACT
+public class LogLevelFilter
+public constructor(
+    private val level: LogLevel,
+    private val type: LogLevelFilterType = LogLevelFilterType.EXACT
 ) : LogFilter {
-    override fun test(t: LogRecord): Boolean {
+    public override fun test(t: LogRecord): Boolean {
         return when (type) {
             LogLevelFilterType.EXACT -> t.level == level
             LogLevelFilterType.GREATER -> t.level > level
@@ -26,15 +27,16 @@ class LogLevelFilter(
     }
 }
 
-enum class MarkerFilterType {
+public enum class MarkerFilterType {
     EXACT, CHILD, EXACT_OR_CHILD
 }
 
-class MarkerFilter(
-        private val marker: Marker,
-        private val type: MarkerFilterType = MarkerFilterType.EXACT_OR_CHILD
+public class MarkerFilter
+public constructor(
+    private val marker: Marker,
+    private val type: MarkerFilterType = MarkerFilterType.EXACT_OR_CHILD
 ) : LogFilter {
-    override fun test(t: LogRecord): Boolean {
+    public override fun test(t: LogRecord): Boolean {
         t.marker ?: return false
         val isChild: Boolean by lazy { marker.isChildOf(t.marker) }
         return when (type) {
@@ -45,14 +47,15 @@ class MarkerFilter(
     }
 }
 
-enum class AttributeFilterType {
+public enum class AttributeFilterType {
     MESSAGE, MARKER, THROWABLE, TRACE
 }
 
-class AttributeFilter(
-        private val type: AttributeFilterType = AttributeFilterType.THROWABLE
+public class AttributeFilter
+public constructor(
+    private val type: AttributeFilterType = AttributeFilterType.THROWABLE
 ) : LogFilter {
-    override fun test(t: LogRecord): Boolean {
+    public override fun test(t: LogRecord): Boolean {
         return when (type) {
             AttributeFilterType.MESSAGE -> t.message != null
             AttributeFilterType.MARKER -> t.marker != null

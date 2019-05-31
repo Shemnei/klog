@@ -5,9 +5,7 @@ import java.io.PrintWriter
 import java.io.StringWriter
 import java.time.Duration
 
-object Util
-
-fun Throwable.stringify(): String {
+public fun Throwable.stringify(): String {
     val sw = StringWriter()
     val pw = PrintWriter(sw, true)
     this.printStackTrace(pw)
@@ -15,7 +13,7 @@ fun Throwable.stringify(): String {
     return sw.toString().trimEnd('\r', '\n', ' ')
 }
 
-fun getCaller(pckg: String = Logger::class.java.packageName): StackTraceElement {
+public fun getCaller(pckg: String = Logger::class.java.packageName): StackTraceElement {
     val stackTraceElements = Thread.currentThread().stackTrace.toMutableList()
     return stackTraceElements.first {
         !it.className.startsWith(pckg)
@@ -25,7 +23,7 @@ fun getCaller(pckg: String = Logger::class.java.packageName): StackTraceElement 
 }
 
 // HH:mm:ss.SSS
-fun Duration.format(): String {
+public fun Duration.format(): String {
     val millis = this.toMillis()
     val absMillis = Math.abs(millis)
     val positive = String.format(
