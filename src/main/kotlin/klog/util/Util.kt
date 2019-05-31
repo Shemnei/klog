@@ -17,7 +17,11 @@ fun Throwable.stringify(): String {
 
 fun getCaller(pckg: String = Logger::class.java.packageName): StackTraceElement {
     val stackTraceElements = Thread.currentThread().stackTrace.toMutableList()
-    return stackTraceElements.first { !it.className.startsWith(pckg) }
+    return stackTraceElements.first {
+        !it.className.startsWith(pckg)
+                && !it.className.startsWith("java")
+                && !it.className.startsWith("kotlin")
+    }
 }
 
 // HH:mm:ss.SSS
