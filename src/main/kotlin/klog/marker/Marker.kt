@@ -1,6 +1,6 @@
 package klog.marker
 
-class Marker(
+class Marker internal constructor(
         val id: String
 ) {
     private val parents: MutableSet<Marker> = HashSet()
